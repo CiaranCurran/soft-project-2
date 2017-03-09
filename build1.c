@@ -27,8 +27,11 @@ int main(void){
 	int i;
 	//declare array of player structs
 	Player players[MAX_PLAYERS];//can take maximum size of players
+	Slot slots[MAX_SLOTS];
 	
 	int numPlayers = getPlayers(players);
+	slotNumber = getSlotNumber(numPlayers);
+   	setSlots(slots, slotType, slotNumber);
 	
 	/***SHOW THAT getPlayers WORKED CORRECTLY***/
 	for(i=0;i<numPlayers;i++){
@@ -87,4 +90,24 @@ int getPlayers(Player * const wPlayers){ //dont be confused by the "w" infront o
 		  
 	 }
 	  return numPlayers;   //returns the number of players  to be used later in main
+}
+int getSlotNumber(int numPlayers){
+    int slotNum;
+    printf("\nPlease enter the number of slots:");
+    do{
+        scanf("%d", &slotNum);
+        if(slotNum>20 || slotNum<numPlayers){
+            printf("\nPlease enter valid slot number:");
+        }
+    }while(slotNum>20 || slotNum<numPlayers);
+    return slotNum;
+}
+void setSlots(Slot * const slots,  const char ** slotType, int numSlots){
+    int i;
+    int j;
+    for(i=0;i<numSlots;i++){
+        slots[i].occupied = false;
+        slots[i].playerIndex = -1; // -1 is default initialisation
+        strcpy(slots[i].type, slotType[randRange(0, 2)]);//sets slot to a random type from the array containing slot type names
+    }
 }
