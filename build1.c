@@ -7,7 +7,9 @@
 
 
 void displayPlayerStats(Player * const players, int numPlayers); //for testing purposes
-/*me */void attackPlayer(Player *attacker, Player *attacked);
+void attackPlayer(Player *attacker, Player *attacked);
+void movePlayer(Player *player, Slot * const slots, const char ** slotType, int moveDirection);
+
 
 
 //declare player structure
@@ -144,3 +146,46 @@ void attackPlayer(Player *attacker, Player *attacked){
     }
 }
 
+
+void movePlayer(Player *player, Slot * const slots, const char ** slotType, int moveDirection){
+    //move to the right
+    //printf("\nLOCATION NO 3.1\n");
+    if(moveDirection==0){
+        //printf("\nLOCATION NO 3.3\n");
+        slots[player->slotIndex+1].playerIndex = slots[player->slotIndex].playerIndex;
+        slots[player->slotIndex+1].occupied = true;
+        slots[player->slotIndex].playerIndex = -1;//becomes empty so change to default
+        slots[player->slotIndex].occupied = false; // becomes empty so no longer occupied
+        player->slotIndex +=1;
+    }
+    
+    else if(moveDirection==1){
+        //printf("\nLOCATION NO 3.4\n");
+        slots[player->slotIndex-1].playerIndex = slots[player->slotIndex].playerIndex ;
+        slots[player->slotIndex-1].occupied = true;
+        slots[player->slotIndex].playerIndex = -1;//becomes empty so change to default
+        slots[player->slotIndex].occupied = false;
+        player->slotIndex -=1;
+    }
+    
+    //if hill
+    if(strcmp(slots[player->slotIndex].type, slotType[1])==0){
+        //printf("\nLOCATION NO 3.5\n");
+        if(player->Capabilities.dexterity<50){
+            //printf("\nLOCATION NO 3.6\n");
+            player->Capabilities.strength -= 10;
+        }
+        else if(player->Capabilities.dexterity>=60){
+            //printf("\nLOCATION NO 3.7\n");
+            player->Capabilities.strength +=10;
+        }
+    }
+    else if(strcmp(slots[player->slotIndex].type, slotType[2])==0){
+        //printf("\nLOCATION NO 3.8\n");
+        if(player->Capabilities.smartness>60){
+            //printf("\nLOCATION NO 3.9\n");
+            player->Capabilities.magicSkills +=10;
+        }
+    }
+    //printf("\nLOCATION NO 4.0.1\n");                
+}
