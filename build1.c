@@ -5,6 +5,11 @@
 #define MAX_PLAYERS 6
 #define MAX_NAME_LEN 50
 
+
+void displayPlayerStats(Player * const players, int numPlayers); //for testing purposes
+/*me */void attackPlayer(Player *attacker, Player *attacked);
+
+
 //declare player structure
 typedef struct{
 	char name[50];
@@ -32,6 +37,7 @@ int main(void){
 	int numPlayers = getPlayers(players);
 	slotNumber = getSlotNumber(numPlayers);
    	setSlots(slots, slotType, slotNumber);
+	displayPlayerStats(players, numPlayers);
 	
 	/***SHOW THAT getPlayers WORKED CORRECTLY***/
 	for(i=0;i<numPlayers;i++){
@@ -111,3 +117,30 @@ void setSlots(Slot * const slots,  const char ** slotType, int numSlots){
         strcpy(slots[i].type, slotType[randRange(0, 2)]);//sets slot to a random type from the array containing slot type names
     }
 }
+void displayPlayerStats(Player * const players, int numPlayers){
+    int i;
+    for(i=0;i<numPlayers;i++){
+        printf("\n%-10s%-10s Life=%d, Luck=%d, Strength=%d, Smartness=%d, Magic=%d, Dexterity=%d slot:%d",
+               players[i].name, players[i].type,
+               players[i].lifePoints,
+               players[i].Capabilities.luck,
+               players[i].Capabilities.strength,
+               players[i].Capabilities.smartness,
+               players[i].Capabilities.magicSkills,
+               players[i].Capabilities.dexterity,
+               players[i].slotIndex);
+    }
+}
+
+void attackPlayer(Player *attacker, Player *attacked){
+    //printf("\nLOCATION NO 2.1\n");
+    if(attacked->Capabilities.strength<=70){
+        //printf("\nLOCATION NO 2.2\n");
+        attacked->lifePoints = attacked->lifePoints - 0.5*attacked->Capabilities.strength;
+    }
+    else if(attacked->Capabilities.strength>70){
+        //printf("\nLOCATION NO 2.3\n");
+        attacker->lifePoints = attacker->lifePoints - 0.3*attacked->Capabilities.strength;
+    }
+}
+
